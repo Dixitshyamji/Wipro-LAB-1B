@@ -1,12 +1,7 @@
-// ============================================================
-// main.swift
-// Wipro LAB-1B — Access Control and Encapsulation
-// Entry point: runs all demonstrations and validations
-// ============================================================
+
 
 import Foundation
 
-// Helper to print section banners
 func banner(_ title: String) {
     let line = String(repeating: "─", count: 55)
     print("\n\(line)")
@@ -14,7 +9,6 @@ func banner(_ title: String) {
     print(line)
 }
 
-// Helper to safely run throwing code and print result
 func attempt(_ description: String, _ block: () throws -> Void) {
     do {
         try block()
@@ -24,9 +18,7 @@ func attempt(_ description: String, _ block: () throws -> Void) {
     }
 }
 
-// ================================================================
-// SECTION 1 — Normal Account Operations (Task 1 & 4)
-// ================================================================
+
 banner("1. Normal BankAccount Operations")
 
 var account: BankAccount!
@@ -44,23 +36,16 @@ attempt("Withdraw ₹1500") {
 
 account.printStatement()
 
-// ================================================================
-// SECTION 2 — Encapsulation: balance is NOT writable (Task 4)
-// ================================================================
+
 banner("2. Encapsulation — Balance is Read-Only")
 
 print("  currentBalance (via public getter): ₹\(account.currentBalance)")
-// The line below would NOT compile — balance is private:
-// account.balance = 99999   // ← COMPILE ERROR: 'balance' is inaccessible due to 'private' protection level
 print("  Direct write to balance is BLOCKED at compile time (private)")
 print("  accountHolder (internal): \(account.accountHolder) — readable within module")
 
-// ================================================================
-// SECTION 3 — Error / Boundary Validation (Task 2)
-// ================================================================
+
 banner("3. Boundary & Error Validation")
 
-// 3a. Invalid account setup
 attempt("Create account with EMPTY holder name") {
     _ = try BankAccount(holder: "", number: "SB-002", initialDeposit: 1000)
 }
@@ -73,7 +58,6 @@ attempt("Create account with NEGATIVE initial deposit (-500)") {
     _ = try BankAccount(holder: "Test User", number: "SB-004", initialDeposit: -500)
 }
 
-// 3b. Invalid deposit/withdraw on valid account
 var testAccount: BankAccount!
 attempt("Create test account with ₹1000") {
     testAccount = try BankAccount(holder: "Raj Kumar", number: "SB-010", initialDeposit: 1000)
@@ -99,7 +83,6 @@ attempt("Withdraw NEGATIVE amount (-₹50)") {
     try testAccount.withdraw(-50)
 }
 
-// 3c. Edge case — exact balance withdrawal
 attempt("Withdraw EXACTLY the balance (₹1000)") {
     try testAccount.withdraw(1000)
 }
@@ -110,9 +93,7 @@ attempt("Withdraw after account emptied (₹1)") {
 
 testAccount.printStatement()
 
-// ================================================================
-// SECTION 4 — Access Level Demonstration (Task 3)
-// ================================================================
+
 banner("4. Access Level Demonstration")
 
 printAccessLevelExplanation()
@@ -124,16 +105,12 @@ demo.showAll()
 print("\n  Calling same-file extension:")
 demo.sameFileExtensionDemo()
 
-// fileprivate member is NOT accessible here (different file):
-// demo.fileprivateInfo    // ← COMPILE ERROR in AccessLevelsDemo.swift's context
+
 print("\n  demo.fileprivateInfo → NOT accessible from main.swift (fileprivate)")
 print("  demo.privateInfo     → NOT accessible from main.swift (private)")
 print("  demo.internalInfo    → Accessible: '\(demo.internalInfo)' (internal = same module)")
 print("  demo.publicInfo      → Accessible: '\(demo.publicInfo)' (public)")
 
-// ================================================================
-// SECTION 5 — Multi-Account Summary
-// ================================================================
 banner("5. Multi-Account Demo")
 
 let accounts: [(String, String, Double)] = [
